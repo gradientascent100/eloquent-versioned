@@ -145,6 +145,7 @@ trait Versioned
                     $oldVersion->forceFill($this->original);
                     unset($oldVersion->attributes[$this->primaryKey]);
                     $oldVersion->{static::getIsCurrentVersionColumn()} = 0;
+                    $oldVersion->actual_to = $this->freshTimestamp();
 
                     $oldVersion->performInsert($query, ['timestamps' => false]);
 
@@ -157,6 +158,8 @@ trait Versioned
                     $this->{static::getVersionColumn()} = static::getNextVersion($this->{static::getModelIdColumn()});
 	                $this->{static::getIsCurrentVersionColumn()} = 1;
 	                $this->updated_at = $this->freshTimestamp();
+                    $this->actual_from = $this->freshTimestamp();
+                    $this->actual_to = '2038-01-19 00:00:00';
 
                     $saved = $this->performUpdate($query, $options);
 
