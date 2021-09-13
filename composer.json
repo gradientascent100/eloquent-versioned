@@ -1,5 +1,5 @@
 {
-  "name": "sbarre/eloquent-versioned",
+  "name": "nlrs/eloquent-datetime-versioned",
   "description": "Add transparent versioning to Laravel 5.2's Eloquent ORM",
   "keywords": [
     "laravel",
