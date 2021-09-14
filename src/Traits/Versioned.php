@@ -188,6 +188,8 @@ trait Versioned
         // then set the model_id to the id of the newly created record.
         else {
             $this->{static::getIsCurrentVersionColumn()} = 1;
+            $this->actual_from = $this->freshTimestamp();
+            $this->actual_to = '2038-01-19 00:00:00';
             $saved = $this->performInsert($query, $options);
             $this->{static::getModelIdColumn()} = $this->attributes[$this->primaryKey];
             $saved = $saved && $this->performUpdate($query, $options);
