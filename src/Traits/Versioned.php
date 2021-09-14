@@ -48,9 +48,9 @@ trait Versioned
     /**
      * @return string
      */
-    public function getKeyName()
+    public function getQualifiedKeyName()
     {
-        return $this->isVersioned ? $this->getModelIdColumn() : $this->primaryKey;
+        return $this->getQualifiedModelIdColumn();
     }
 
     /**
