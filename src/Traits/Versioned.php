@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 
 trait Versioned
 {
-
     protected $isVersioned = true;
+    protected static $specificMoment = null;
 
     protected $hideVersioned = [
         VersionedBuilder::COLUMN_IS_CURRENT_VERSION,
@@ -387,6 +387,32 @@ trait Versioned
 	        $this->forceFill($revertedAttributes);
             $this->save();
         }
+    }
+
+    /**
+     * @param $dt
+     *
+     * @return mixed
+     */
+    public static function setSpecificMomentVal($dt)
+    {
+        self::$specificMoment = $dt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function unsetSpecificMomentVal()
+    {
+        self::$specificMoment = null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getSpecificMomentVal()
+    {
+        return self::$specificMoment;
     }
 
 }

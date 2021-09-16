@@ -11,7 +11,16 @@ class VersioningScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where($model->getQualifiedIsCurrentVersionColumn(), 1);
+        if (is_null($model::getSpecificMomentVal())) {
+            $builder->where($model->getQualifiedIsCurrentVersionColumn(), 1);
+        } else {
+            $model = $builder->getModel();
+            $modelIdColumn = \EloquentVersioned\Traits\Versioned::getModelIdColumn();
+            $versionColumn = \EloquentVersioned\Traits\Versioned::getVersionColumn();
+            $table = $model->getTable();
+
+            $builder->whereRaw("($modelIdColumn, $versionColumn) IN (SELECT $modelIdColumn, MAX($versionColumn) FROM $table WHERE actual_from <= ? AND actual_to > ? GROUP BY $modelIdColumn, $versionColumn)", [$model::getSpecificMomentVal(), $model::getSpecificMomentVal()]);
+        }
     }
 
     /**
